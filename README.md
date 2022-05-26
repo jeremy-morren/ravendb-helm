@@ -5,7 +5,7 @@ This is a helm chart for setting up a RavenDB cluster.
 ### Usage
 
 ```shell
-helm repo add ravendb jeremy-morren.github.io/ravendb
+helm repo add ravendb jeremy-morren.github.io/ravendb-helm
 helm repo update
 helm install ravendb ravendb/ravendb -n db --create-namespace -f values.yaml
 ```

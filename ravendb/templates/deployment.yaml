@@ -1,0 +1,116 @@
+﻿apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "ravendb.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ravendb.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "ravendb.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "ravendb.labels" . | nindent 6 }}
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  replicas: {{ .Values.clusterSize }}
+  template:
+    metadata:
+      labels:
+        {{- include "ravendb.labels" . | nindent 8}} 
+    spec:
+      serviceAccountName: {{ include "ravendb.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - image: {{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion }}-{{ .Values.image.base }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: ravendb
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          command:  [ '/bin/sh', '-c', '/opt/RavenDB/Server/Raven.Server --config-path /config/$HOSTNAME' ]
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          ports:
+            - containerPort: 443
+              name: https
+              protocol: TCP
+            - containerPort: 38888
+              name: tcp
+              protocol: TCP
+            - containerPort: 161
+              name: snmp
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: {{ include "ravendb.fullname" . }}-data
+            - mountPath: /license
+              name: license
+            - mountPath: /config
+              name: config
+            - mountPath: /tls
+              name: tls
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  host=$(cat /config/$HOSTNAME | jq '.Host' -r)
+                  curl -s --fail "https://$host/build/version" --resolve "$host:443:127.0.0.1" --cert /tls/tls.crt --key /tls/tls.key 
+      volumes:
+        - name: license
+          secret:
+            secretName: {{ include "ravendb.fullname" . }}-license
+            defaultMode: 0440
+        - name: config
+          configMap:
+            name: {{ include "ravendb.fullname" . }}-config
+            defaultMode: 0440
+        - name: tls
+          secret:
+            secretName: {{ include "ravendb.tls-secret" . }}
+            defaultMode: 0440
+
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ include "ravendb.fullname" . }}-data
+        labels:
+          {{- include "ravendb.labels" . | nindent 10 }}
+        {{- with .Values.storage.annotations }}
+        annotations:
+          {{ toYaml . | nindent 10 }}
+        {{- end}}
+      spec:
+        storageClassName: {{ .Values.storage.class }}
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}
+          
+          
+  

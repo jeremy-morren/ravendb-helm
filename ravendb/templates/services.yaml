@@ -1,0 +1,29 @@
+﻿{{range $i, $e := until (.Values.clusterSize | int) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ravendb.fullname" $ }}-{{$i | toString }}
+  labels:
+    {{- include "ravendb.labels" $ | nindent 4 }}
+  {{- with (index $.Values.services ($i | toString)).annotations }}
+  annotations:
+    {{- toYaml . | nindent 4}}
+  {{- end}}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  sessionAffinity: ClientIP
+  ports:
+    - name: https
+      port: 443
+      targetPort: https
+      protocol: TCP
+    - name: tcp
+      port: 38888
+      targetPort: tcp
+      protocol: TCP
+  selector:
+    {{- include "ravendb.labels" $ | nindent 4}}
+    statefulset.kubernetes.io/pod-name: {{ include "ravendb.fullname" $ }}-{{$i | toString }}
+---
+{{end}}

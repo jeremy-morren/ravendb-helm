@@ -1,0 +1,45 @@
+﻿apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "ravendb.fullname" . }}
+  labels:
+    {{- include "ravendb.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    ingress.kubernetes.io/ssl-passthrough: 'true'
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  tls:
+    - hosts:
+        {{- range $k, $v := .Values.hosts }}
+        - {{ $v.http }}
+        - {{ $v.tcp }}
+        {{- end }}
+    - secretName: {{ include "ravendb.tls-secret" . | squote }}
+  rules:
+    {{- range $k, $v := .Values.hosts }}
+    - host: {{ $v.http | squote }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: {{ printf "%s-%s" (include "ravendb.fullname" $) $k | squote }}
+                port: 
+                  name: https
+    - host: {{ $v.tcp | squote }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: {{ printf "%s-%s" (include "ravendb.fullname" $) $k | squote }}
+                port:
+                  name: tcp
+    {{- end }}

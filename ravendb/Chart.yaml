@@ -1,0 +1,9 @@
+apiVersion: v2
+name: ravendb
+description: A RavenDB helm chart for kubernetes
+
+type: application
+
+version: 0.1.0
+
+appVersion: "5.3"

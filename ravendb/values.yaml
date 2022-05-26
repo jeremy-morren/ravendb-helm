@@ -1,0 +1,88 @@
+# Default values for ravendb chart
+
+clusterSize: 3
+
+#Configure RavenDB public URLs
+hosts:
+#  '0': 
+#    http: 'a.ravendb.local'
+#    tcp: 'tcp-a.ravendb.local'
+#  '1': 
+#    http: 'b.ravendb.local'
+#    tcp: 'tcp-b.ravendb.local'
+#  '2': 
+#    http: 'c.ravendb.local'
+#    tcp: 'tcp-c.ravendb.local'
+
+#Add your license json (multiline is fine)
+license: ""
+
+ingress:
+  #If ingress class is not provided, it will be ignored
+  className: "" 
+  annotations: {}
+    # kubernetes.io/ingress.class: haproxy
+    # kubernetes.io/cluster-issuer: letsencrypt
+  
+  #If not specified, a secret name will be generated automatically
+  tlsSecretName: ""
+
+services: {}
+#  '0':
+#    type: ClusterIP
+#    annotations: {}
+#  '1':
+#    type: ClusterIP
+#    annotations: {}
+#  '2':
+#    type: ClusterIP
+#    annotations: {}
+
+storage:
+  class: premium
+  size: 100Gi
+  annotations: {}
+
+image:
+  repository: ravendb/ravendb
+  pullPolicy: IfNotPresent
+  tag: ""
+  base: ubuntu-latest
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+# runAsUser: 1000
+
+#Specify pod resources
+resources:
+#  limits:
+#    cpu: 100m
+#    memory: 128Mi
+#  requests:
+#    cpu: 1
+#    memory: 1Gi
+
+terminationGracePeriodSeconds: 120
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

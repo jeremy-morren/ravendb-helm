@@ -2,6 +2,7 @@
 kind: Ingress
 metadata:
   name: {{ include "ravendb.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "ravendb.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -16,10 +17,10 @@ spec:
   tls:
     - hosts:
         {{- range $k, $v := .Values.hosts }}
-        - {{ $v.http }}
-        - {{ $v.tcp }}
+        - {{ $v.http | squote }}
+        - {{ $v.tcp | squote  }}
         {{- end }}
-    - secretName: {{ include "ravendb.tls-secret" . | squote }}
+      secretName: {{ include "ravendb.tls-secret" . | squote }}
   rules:
     {{- range $k, $v := .Values.hosts }}
     - host: {{ $v.http | squote }}

@@ -22,6 +22,7 @@
 *.tmproj
 .vscode/
 
+#templates/services.yaml
 #templates/ingress.yaml
 #templates/deployment.yaml
 #templates/config.yaml

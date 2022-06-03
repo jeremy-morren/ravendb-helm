@@ -32,18 +32,21 @@ hosts:
 ingress:
   annotations:
    kubernetes.io/ingress.class: haproxy
-   kubernetes.io/cluster-issuer: letsencrypt
+   cert-manager.io/cluster-issuer: letsencrypt
   tlsSecretName: "ravendb-tls"
 
 storage:
   class: premium
   size: 100Gi
 
+license: |
+  { "Keys": [] }
+
 resources:
-  limits:
+  requests:
     cpu: 100m
     memory: 128Mi
-  requests:
+  limits:
     cpu: 1
     memory: 1Gi
 ```

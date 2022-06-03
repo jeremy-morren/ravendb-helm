@@ -2,6 +2,7 @@
 kind: ConfigMap
 metadata:
   name: {{ include "ravendb.fullname" . }}-config
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "ravendb.labels" . | nindent 4 }}
 data:
@@ -19,8 +20,7 @@ data:
       "Security.Certificate.Load.Exec.Arguments": "pkcs12 -inkey /tls/tls.key -in /tls/tls.crt -export -out - -nodes -passout pass:",
     
       "PublicServerUrl": "https://{{ $v.http }}/",
-      "PublicServerUrl.Tcp": "https://{{ $v.tcp }}:443/",
-      "Host": "{{ $v.http }}"
+      "PublicServerUrl.Tcp": "https://{{ $v.tcp }}:443/"
     }
   {{- end }}
   

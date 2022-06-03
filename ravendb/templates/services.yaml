@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "ravendb.fullname" $ }}-{{$i | toString }}
+  namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "ravendb.labels" $ | nindent 4 }}
   {{- with (index $.Values.services ($i | toString)).annotations }}

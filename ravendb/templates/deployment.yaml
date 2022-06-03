@@ -59,9 +59,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - |
-                  host=$(cat /config/$HOSTNAME | jq '.Host' -r)
-                  curl -s --fail "https://$host/build/version" --resolve "$host:443:127.0.0.1" --cert /tls/tls.crt --key /tls/tls.key 
+                - curl https://localhost/build/version -s --fail --insecure --cert /tls/tls.crt --key /tls/tls.key 
       volumes:
         - name: license
           secret:

@@ -14,8 +14,10 @@ hosts:
 #    http: 'c.ravendb.local'
 #    tcp: 'tcp-c.ravendb.local'
 
-#Add your license json (multiline is fine)
-license: ""
+#Specify a secret (in the same namespace as the deployment)
+#That contains the ravendb license
+#The secret should have a 'license.json' key
+license: ravendb-license
 
 ingress:
   #If ingress class is not provided, it will be ignored

@@ -39,8 +39,7 @@ storage:
   class: premium
   size: 100Gi
 
-license: |
-  { "Keys": [] }
+license: ravendb-license
 
 resources:
   requests:

@@ -65,6 +65,9 @@ spec:
           secret:
             secretName: {{ include "ravendb.fullname" . }}-license
             defaultMode: 0440
+            items:
+            - key: license.json
+              path: license.json
         - name: config
           configMap:
             name: {{ include "ravendb.fullname" . }}-config

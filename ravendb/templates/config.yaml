@@ -23,15 +23,3 @@ data:
       "PublicServerUrl.Tcp": "https://{{ $v.tcp }}:443/"
     }
   {{- end }}
-  
----
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  name: {{ include "ravendb.fullname" . }}-license
-  labels:
-    {{- include "ravendb.labels" . | nindent 4}}
-stringData:
-  license.json: | 
-    {{- .Values.license | nindent 4 }}

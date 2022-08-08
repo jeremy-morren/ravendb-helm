@@ -11,8 +11,8 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.className }}
-  ingressClassName: {{ .Values.ingress.className }}
+  {{- if .Values.ingress.class }}
+  ingressClassName: {{ .Values.ingress.class }}
   {{- end }}
   tls:
     - hosts:
@@ -30,7 +30,7 @@ spec:
             path: /
             backend:
               service:
-                name: {{ printf "%s-%s" (include "ravendb.fullname" $) $k | squote }}
+                name: {{ print (include "ravendb.fullname" $) "-" $k | squote }}
                 port: 
                   name: https
     - host: {{ $v.tcp | squote }}
@@ -40,7 +40,7 @@ spec:
             path: /
             backend:
               service:
-                name: {{ printf "%s-%s" (include "ravendb.fullname" $) $k | squote }}
+                name: {{ print (include "ravendb.fullname" $) "-" $k | squote }}
                 port:
                   name: tcp
     {{- end }}

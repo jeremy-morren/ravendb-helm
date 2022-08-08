@@ -3,7 +3,7 @@
 clusterSize: 3
 
 #Configure RavenDB public URLs
-hosts:
+hosts: {}
 #  '0': 
 #    http: 'a.ravendb.local'
 #    tcp: 'tcp-a.ravendb.local'
@@ -21,7 +21,7 @@ license: ravendb-license
 
 ingress:
   #If ingress class is not provided, it will be ignored
-  className: "" 
+  class: "" 
   annotations: {}
     # kubernetes.io/ingress.class: haproxy
     # kubernetes.io/cluster-issuer: letsencrypt

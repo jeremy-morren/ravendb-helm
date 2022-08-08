@@ -56,10 +56,7 @@ spec:
               name: tls
           livenessProbe:
             exec:
-              command:
-                - /bin/sh
-                - -c
-                - curl https://localhost/build/version -s --fail --insecure --cert /tls/tls.crt --key /tls/tls.key 
+              command: [ 'curl', 'https://localhost/build/version', '-s', '--fail', '--insecure', '--cert', '/tls/tls.crt', '--key', '/tls/tls.key' ]
       volumes:
         - name: license
           secret:

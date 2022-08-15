@@ -2,10 +2,9 @@
 Successfully deployed {{ include "ravendb.fullname" . }} in namespace {{ .Release.Namespace }}
 
 {{- if .Release.IsInstall }}
-If the tls secret does not exist (e.g. created automatically by a cert-manager issuer), then the rollout will fail. 
-When the secret is available, restart the rollout with:
 
-kubectl rollout restart statefulset.apps {{ include "ravendb.fullname" . }} -n {{ .Release.Namespace }}`
+A self-signed certificate has been generated and stored in the secret {{ include "ravendb.tls-secret" . }}
+
 {{- end }}
 
 To access the Admin CLI, use the following command:

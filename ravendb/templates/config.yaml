@@ -6,6 +6,9 @@ metadata:
   labels:
     {{- include "ravendb.labels" . | nindent 4 }}
 data:
+  # Generate json config for each node
+  # The main thing we are adding is PublicServerUrl and PublicServerUrl.Tcp
+  
   {{- range $k, $v := .Values.hosts }}
   {{- printf "%s-%s" (include "ravendb.fullname" $) $k | nindent 2 }}: |
     {

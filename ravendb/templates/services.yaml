@@ -6,7 +6,7 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "ravendb.labels" $ | nindent 4 }}
-  {{- with (index $.Values.services ($i | toString)).annotations }}
+  {{- with (index $.Values.service).annotations }}
   annotations:
     {{- toYaml . | nindent 4}}
   {{- end}}

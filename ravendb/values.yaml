@@ -14,10 +14,10 @@ hosts: {}
 #    http: 'c.ravendb.local'
 #    tcp: 'tcp-c.ravendb.local'
 
-#Specify a secret (in the same namespace as the deployment)
-#That contains the ravendb license
-#The secret should have a 'license.json' key
-license: ravendb-license
+# Specify ravendb license json
+# Recommended to specify file on command line
+# helm install ... --set-file license=license.json
+license: ""
 
 ingress:
   #If ingress class is not provided, it will be ignored
@@ -29,16 +29,9 @@ ingress:
   #If not specified, a secret name will be generated automatically
   tlsSecretName: ""
 
-services: {}
-#  '0':
-#    type: ClusterIP
-#    annotations: {}
-#  '1':
-#    type: ClusterIP
-#    annotations: {}
-#  '2':
-#    type: ClusterIP
-#    annotations: {}
+service:
+  #Annotations to apply to services
+  annotations: {}
 
 storage:
   class: premium
@@ -48,8 +41,8 @@ storage:
 image:
   repository: ravendb/ravendb
   pullPolicy: IfNotPresent
+  #If not specified, then [chartversion]-ubuntu-latest will be used
   tag: ""
-  base: ubuntu-latest
 
 imagePullSecrets: []
 

@@ -1,0 +1,32 @@
+﻿# The pods require a self-signed cert to start up
+# We can generate a self-signed cert, which can be replaced by
+# the actual certificate at some point
+
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "ravendb.tls-secret" . }}
+  namespace: {{ .Release.Namespace }}
+  # No labels, secret is not part of release
+data:
+  {{- if .Release.IsInstall }}
+
+    # Generate self-signed cert on install
+    {{- $dnsNames := list}}
+    {{- range $k, $v := .Values.hosts }}
+      {{- $dnsNames = append $dnsNames $v.http }}
+      {{- $dnsNames = append $dnsNames $v.tcp }}
+    {{- end }}
+  
+    {{- $cert := genSelfSignedCert (include "ravendb.fullname" .) nil $dnsNames 3650 }}
+    
+    "tls.crt": '{{ $cert.Cert | b64enc }}'
+    "tls.key": '{{ $cert.Key | b64enc }}'
+  {{- else }}
+    # Use existing cert (in case it has been replaced)
+    # `index` function is necessary because the property name contains a '.'
+    tls.crt: {{ index (lookup "v1" "Secret" .Release.Namespace (include "ravendb.tls-secret" .)).data "tls.crt" }}
+    tls.key: {{ index (lookup "v1" "Secret" .Release.Namespace (include "ravendb.tls-secret" .)).data "tls.key" }}
+  {{- end }}
+  

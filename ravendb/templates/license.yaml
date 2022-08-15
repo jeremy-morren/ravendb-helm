@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "ravendb.fullname" . }}-license
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ravendb.labels" . | nindent 4 }}
+data:
+  "license.json": {{ .Values.license | b64enc }}

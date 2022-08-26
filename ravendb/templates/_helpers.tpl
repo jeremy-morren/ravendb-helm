@@ -52,3 +52,4 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "ravendb.tls-secret" }}
 {{- .Values.ingress.tlsSecretName | default (print (include "ravendb.fullname" .) "-tls" )  }}
 {{- end }}
+

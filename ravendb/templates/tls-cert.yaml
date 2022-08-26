@@ -2,7 +2,6 @@
 # We can generate a self-signed cert, which can be replaced by
 # the actual certificate at some point
 
-
 apiVersion: v1
 kind: Secret
 metadata:

@@ -14,10 +14,18 @@ hosts: {}
 #    http: 'c.ravendb.local'
 #    tcp: 'tcp-c.ravendb.local'
 
+#YAML config (will be converted to JSON)
+config:
+  shared: {}
+  '0': {}
+  '1': {}
+  '2': {}
+    
 # Specify ravendb license json
 # Recommended to specify file on command line
 # helm install ... --set-file license=license.json
 license: ""
+
 
 ingress:
   #If ingress class is not provided, it will be ignored

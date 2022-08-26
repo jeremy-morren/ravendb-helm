@@ -3,12 +3,12 @@ entries:
   ravendb:
   - apiVersion: v2
     appVersion: "5.3"
-    created: "2022-08-15T15:08:57.0305034+08:00"
+    created: "2022-08-26T13:35:02.8091084+08:00"
     description: A RavenDB helm chart for kubernetes
-    digest: 1edd973ea4c5cefb3443b46d04939b7d8be2aaff979f28d738dbca3cfc60ea3e
+    digest: 0492b91ad743801ae9842cf3b1f2ab2d03b8774f9aa02477618f1fc1ad211e9d
     name: ravendb
     type: application
     urls:
-    - https://jeremy-morren.github.io/ravendb-helm/charts/ravendb-0.2.0.tgz
-    version: 0.2.0
-generated: "2022-08-15T15:08:57.0295074+08:00"
+    - https://jeremy-morren.github.io/ravendb-helm/charts/ravendb-0.3.0.tgz
+    version: 0.3.0
+generated: "2022-08-26T13:35:02.808077+08:00"

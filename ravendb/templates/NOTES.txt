@@ -8,6 +8,6 @@ A self-signed certificate has been generated and stored in the secret {{ include
 {{- end }}
 
 To access the Admin CLI, use the following command:
-kubectl exec -it -n {{ .Release.Namespace }} {{ include "ravendb.fullname" . }}-0 -- ./rvn admin-channel
+kubectl exec -it -n {{ .Release.Namespace }} {{ include "ravendb.fullname" . }}-0 -- /opt/RavenDB/Server/rvn admin-channel
 
 Happy coding!

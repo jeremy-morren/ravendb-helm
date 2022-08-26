@@ -39,7 +39,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
           # Load the correct config (generated in config.yaml)
-          args: [ '--config-path', '/config/$(NODE)' ]
+          args: [ '--config-path=/config/$(NODE)', '--log-to-console' ]
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           ports:
